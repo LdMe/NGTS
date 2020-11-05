@@ -23,29 +23,7 @@ $connections=[
 ];
 require("fastTravel.php");
 $travel= new FastTravel($cities,$connections);
-var_dump($travel->getDistances("Logroño"));
+var_dump($travel->getDistances("Zaragoza"));
+var_dump($travel->getRoute("Logroño","Segovia"));
 
-/*
-require("tools.php");
-
-$queue=  new PriorityQueue();
-$queue->push("Zaragoza",4);
-$queue->push("Logroño",1);
-$queue->push("Madrid",2);
-
-$queue->push("Asturias",10);
-$queue->push("Barcelona",8);
-$queue->push("Sevilla",16);
-$queue->push("Burgos",3);
-$queue->push("Canarias",20);
-$queue->push("Toledo",1);
-$element = $queue->pull();
-while(!empty($element))
-{
-	echo "data: ".$element['data']." \n";
-	echo "value: ".$element['value']."\n";
-	$element = $queue->pull();
-}
-
-*/
 

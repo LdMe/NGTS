@@ -3,7 +3,7 @@
 
 class PriorityQueue{
 	private $elements=[];
-
+	// insert an element by value in increasing order
 	public function push($data,$value)
 	{
 		if(empty($this->elements))

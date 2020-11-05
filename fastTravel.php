@@ -4,7 +4,7 @@ require("tools.php");
 class FastTravel{
 	private $cities=null;
 	private $connections=null;
-	private $journeys =[];
+	private $routes =[];
 	public function __construct($cities,$connections)
 	{
 		$this->cities= $cities;
@@ -23,13 +23,45 @@ class FastTravel{
 		//calculate all the distances at the constructor, so you can access them directly after that
 		$this->init();
 	}
+
+	public function getRoute($origin,$destination)
+	{
+		if(!in_array($origin, $this->cities)){
+			throw new Exception("Origin city doesn't exist!");
+			
+		}
+		if(!in_array($destination, $this->cities)){
+			throw new Exception("Destination city doesn't exist!");
+			
+		}
+		$route = $this->routes[$destination];
+		$parents = [];
+		$distance =$route["distance"][$origin];
+		$step= $origin;
+		while($step!== null){
+			$parents[]=$step;
+			$step= $route["parent"][$step];
+		}
+		return ["distance" => $distance,"route" => $parents];
+	}
+
+	public function getDistances($origin)
+	{
+		if(!in_array($origin, $this->cities)){
+			throw new Exception("Origin city doesn't exist!");
+			
+		}
+		return $this->routes[$origin]["distance"];
+	}
+
 	private function init()
 	{
-		$this->journeys=[];
+		$this->routes=[];
 		foreach ($this->cities as $city) {
-			$this->journeys[$city]=$this->shortestPath($city);
+			$this->routes[$city]=$this->shortestPath($city);
 		}
 	}
+
 	private function shortestPath($origin)
 	{
 		$distance = [];
@@ -83,6 +115,7 @@ class FastTravel{
 		}
 		return $adjacent;
 	}
+
 	private function getDistance($origin,$destination)
 	{
 		$originIndex= array_search($origin, $this->cities);
@@ -90,32 +123,5 @@ class FastTravel{
 		return $this->connections[$originIndex][$destinationIndex];
 
 	}
-	public function getRoute($origin,$destination)
-	{
-		if(!in_array($origin, $this->cities)){
-			throw new Exception("Origin city doesn't exist!");
-			
-		}
-		if(!in_array($destination, $this->cities)){
-			throw new Exception("Destination city doesn't exist!");
-			
-		}
-		$route = $this->journeys[$destination];
-		$parents = [];
-		$distance =$route["distance"][$origin];
-		$step= $origin;
-		while($step!== null){
-			$parents[]=$step;
-			$step= $route["parent"][$step];
-		}
-		return [$distance,$parents];
-	}
-	public function getDistances($origin)
-	{
-		if(!in_array($origin, $this->cities)){
-			throw new Exception("Origin city doesn't exist!");
-			
-		}
-		return $this->journeys[$origin]["distance"];
-	}
+	
 }
