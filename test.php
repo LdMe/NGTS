@@ -23,7 +23,7 @@ $connections=[
 ];
 require("fastTravel.php");
 $travel= new FastTravel($cities,$connections);
-var_dump($travel->getDistances("Logroñso"));
+var_dump($travel->getDistances("Logroño"));
 
 /*
 require("tools.php");
