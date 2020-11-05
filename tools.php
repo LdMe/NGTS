@@ -1,117 +1,56 @@
 <?php
 
 
-class Node
-{
-	private $value;
-	private $prev;
-	private $next;
-	public function __construct($value=null,?Node $prev=null,?Node $next=null)
-	{
-		$this->value = $value;
-		$this->prev= $prev;
-		$this->next =$next;
-	}
-	public function getPrev()
-	{
-		return $this->prev;
-	}
-	public function getNext()
-	{
-		return $this->next;
-	}
-	public function getValue(){
-		return $this->value;
-	}
-	public function setPrev(?Node $prev)
-	{
-		$this->prev=$prev;
-	}
-	public function setNext(?Node $next)
-	{
-		$this->next=$next;
-	}
-	public function setValue(?Node $value)
-	{
-		$this->value=$value;
-	}
+class PriorityQueue{
+	private $elements=[];
 
-}
-
-class PriorityStack{
-	private $head=null;
-	private $ascendant;
-	public function __construct( $value=null,bool $ascendant=true)
+	public function push($data,$value)
 	{
-		if($value !== null)
+		if(empty($this->elements))
 		{
-			$this->head = new Node($value);
-		}
-
-		$this->ascendant=$ascendant;
-	}
-	public function push($value)
-	{
-		$node =$this->head;
-		if( $node ===null)
-		{
-			$newNode= new Node($value);
-			$this->head=$newNode;
+			$this->elements[]=[
+				"data" => $data,
+				"value" => $value
+			];
 			return;
 		}
-		$conditionstr = '($node->getValue() < $value)';
-		if(!$this->ascendant)
-		{
-			$conditionstr = '($node->getValue() > $value)';
-		}
-		$condition=true;
-		while($condition)
-		{
-			eval("\$condition= $conditionstr;");
-			echo "value: $value, node value: ".$node->getValue().", condition= $condition \n";
-			if ($node->getNext() === null) {
-				
-				echo "no next node\n";
-				break;
-			}
-			$node=$node->getNext();
-		}
-		if($condition)
-		{
-			$newNode = new Node($value, $node);
-			$newNode->setNext($node->getNext());
-			$next = $node->getNext();
-			if($next !==null)
+		for ($i=0; $i < sizeof($this->elements); $i++) { 
+			if($this->elements[$i]["value"]> $value)
 			{
-				$next->setPrev($newNode);
+				if($i == 0){
+					$array=[
+						"data" => $data,
+						"value" => $value
+					];
+					$this->elements = array_merge([$array],$this->elements);
+				}
+				else{
+					$start = array_slice($this->elements,0, $i);
+					$end = array_slice($this->elements, $i);
+					$start[]=[
+						"data" => $data,
+						"value" => $value
+					];
+					$this->elements= array_merge($start,$end);
+				}
+				return;
 			}
-			$node->setNext($newNode);
-		} 
-		else{
-			echo "yess\n";
-			var_dump($this->head);
-			$prev= $node->getPrev();
-			$newNode = new Node($value,$prev,$node);
-			if($prev)
-			{
-				$prev->setNext($newNode);
-			}
-			$node->setPrev($newNode);
-			if($node->getValue() === $this->head->getValue())
-			{
-				$this->head= $newNode;
-			}
-			
-			
 		}
+		$this->elements[]=[
+				"data" => $data,
+				"value" => $value
+			];
 	}
 	public function pull()
 	{
-		if($this->head === null){
-			return null;
+		if(empty($this->elements)){
+			return [];
 		}
-		$value= $this->head->getValue();
-		$this->head= $this->head->getNext();
-		return $value;
+		$data = $this->elements[0];
+		$this->elements = array_slice($this->elements,1);
+		return $data;
+	}
+	public function isEmpty(){
+		return empty($this->elements);
 	}
 }

@@ -22,41 +22,30 @@ $connections=[
         [0,0,0,0,0,7,6,4,0]
 ];
 require("fastTravel.php");
+$travel= new FastTravel($cities,$connections);
+var_dump($travel->getDistances("Logroñso"));
 
+/*
 require("tools.php");
 
+$queue=  new PriorityQueue();
+$queue->push("Zaragoza",4);
+$queue->push("Logroño",1);
+$queue->push("Madrid",2);
 
-$stack = new PriorityStack(3);
-$stack->push(2);
+$queue->push("Asturias",10);
+$queue->push("Barcelona",8);
+$queue->push("Sevilla",16);
+$queue->push("Burgos",3);
+$queue->push("Canarias",20);
+$queue->push("Toledo",1);
+$element = $queue->pull();
+while(!empty($element))
+{
+	echo "data: ".$element['data']." \n";
+	echo "value: ".$element['value']."\n";
+	$element = $queue->pull();
+}
 
-$value= $stack->pull();
-while($value !== null)
-{
-	echo $value . "\n";
-	$value= $stack->pull();
-}
-$stack->push(3);
-$stack->push(2);
-$stack->push(4);
-$value= $stack->pull();
-echo "---------------------\n";
-while($value !== null)
-{
-	echo $value . "\n";
-	$value= $stack->pull();
-}
-echo "---------------------\n";
-$stack->push(4);
-$stack->push(5);
-$stack->push(7);
-$stack->push(1);
-$stack->push(1);
-$stack->push(3);
-$stack->push(2);
-$value= $stack->pull();
-while($value !== null)
-{
-	echo $value . "\n";
-	$value= $stack->pull();
-}
-echo "---------------------\n";
+*/
+
