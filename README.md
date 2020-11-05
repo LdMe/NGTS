@@ -39,9 +39,9 @@ La compañía ha iniciado el servicio de transporte con sede en unas pocas provi
  * **(Bonus)**, Muestra el coste de recorrido mínimo desde un origen **X** a **todos** los destinos. (La solución debe indicar el coste de recorrido mínimo entre el origen y todos los destinos)
 
 
-## Raw data for imput
+## Raw data for input
 
-Puedes usar el sigueinte imput de datos como inicio, pero la solución es totalmente libre.
+Puedes usar el sigueinte input de datos como inicio, pero la solución es totalmente libre.
 
 ```php
 $cities=['Logroño','Zaragoza','Teruel','Madrid','Lleida','Alicante','Castellón','Segovia','Ciudad Real'];
@@ -68,3 +68,82 @@ $connections=[[0,4,6,8,0,0,0,0,0],
 | **Castellón** | 0 | 0 | 0 | 0 | 4 | 3 | 0 | 0 | 6 |
 | **Segovia** | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 0 | 4 |
 | **Ciudad Real** | 0 | 0 | 0 | 0 | 0 | 7 | 6 | 4 | 0 |
+
+
+## Solución
+La librería consta de una clase principal con dos métodos públicos que para resolver los dos problemas anteriormente planteados. Para resolver los problemas, se basa en el algoritmo de dijkstra y usa una cola de prioridad, implementada en tools.php.
+
+**1) Mostrar la ruta más rápida de un origen a un destino.**
+```
+getRoute(<origen>,<destino>)
+```
+Devuelve: array de 2 elementos: "distance" con la coste del viaje y "route", un array con las ciudades a recorrer.
+
+Ejemplo:
+```
+<?php
+require("fastTravel.php");
+$travel= new FastTravel($cities,$connections);
+var_dump($travel->getRoute("Logroño","Ciudad Real"));
+
+```
+Resultado:
+```
+array(2) {
+  ["distance"]=>        
+  int(16)
+  ["route"]=>         
+  array(5) {
+    [0]=>                 
+    string(8) "Logroño"
+    [1]=>                   
+    string(8) "Zaragoza"
+    [2]=>
+    string(6) "Lleida"         
+    [3]=>                           
+    string(10) "Castellón"
+    [4]=>
+    string(11) "Ciudad Real"
+  }
+}
+
+```
+**2) Mostrar la distancia más corta desde un origen dado a todos los destinos**
+```
+getDistances(<origen>)
+```
+Devuelve: array con las ciudades como claves y las distancias como valor.
+
+Ejemplo:
+
+```
+<?php
+require("fastTravel.php");
+$travel= new FastTravel($cities,$connections);
+var_dump($travel->getDistances("Zaragoza"));
+
+```
+Resultado:
+```
+array(9) {
+  ["Logroño"]=>
+  int(4)
+  ["Zaragoza"]=>
+  int(0)
+  ["Teruel"]=>
+  int(2)
+  ["Madrid"]=>
+  int(5)
+  ["Lleida"]=>
+  int(2)
+  ["Alicante"]=>
+  int(9)
+  ["Castellón"]=>
+  int(6)
+  ["Segovia"]=>
+  int(10)
+  ["Ciudad Real"]=>
+  int(12)
+}
+
+```
